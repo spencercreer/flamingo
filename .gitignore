@@ -1,0 +1,7 @@
+# dependencies
+.DS_Store
+**/node_modules
+**/dist
+**/build
+
+npm-debug.log*
