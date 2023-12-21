@@ -5,6 +5,8 @@ interface IUser extends Document {
   name: string;
   email: string;
   password: string;
+  judge: boolean;
+  scores: number[];
   comparePassword(password: string): Promise<boolean>;  
 }
 
@@ -25,7 +27,16 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
     minlength: 6,
-  }
+  },
+  judge: {
+    type: Boolean,
+    // required: true,
+    default: false,
+  },
+  scores: {
+    type: [Number],
+    default: [],
+  },
 },
 {
     timestamps: true,

@@ -1,0 +1,18 @@
+{
+    "name": "flamingo",
+    "version": "1.0.0",
+    "description": "Flamingo",
+    "repository": "",
+    "author": "Spencer Creer",
+    "license": "MIT",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "concurrently \"cd server && npm run dev\" \" cd client && npm start\""
+    },
+    "dependencies": {
+        "concurrently": "^8.2.2"
+    }
+}

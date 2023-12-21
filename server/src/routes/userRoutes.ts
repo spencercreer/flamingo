@@ -1,19 +1,18 @@
 import { Router } from "express";
-// import authController from "../../controllers/authControllers";
 import { UserController } from "../controllers";
 
 const userRoutes = Router();
 
-userRoutes.get("/", () => {
-    console.log("getall users")
-})
+userRoutes.get("/", UserController.getAllUsers)
 
 userRoutes.get("/:id", () => {
-    console.log("get one user users")
+    // TODO
 })
 
 userRoutes.post("/signup", UserController.signUp);
 
 userRoutes.post("/login", UserController.login);
+
+userRoutes.put("/score", UserController.addScore)
 
 export default userRoutes;
