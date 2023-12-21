@@ -12,12 +12,18 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-export const signUp = async (req: Request, res: Response): Promise<void> => {
+export const signUp = async (req: any, res: Response): Promise<void> => {
   try {
     const { name, email, password } = req.body;
     const user = await User.create({ name, email, password });
 
-    res.status(201).json(user);
+    // Store user information in the session
+    req.session.user = user;
+
+    // What is 201
+    res.status(201).json({
+      user,
+    });
   } catch (error) {
     console.error(error);
     res.status(400).json("Failed to create a user.");
@@ -25,7 +31,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const login = async (
-  req: Request,
+  req: any,
   res: Response
 ): Promise<Response | void> => {
   try {
@@ -40,7 +46,11 @@ export const login = async (
       return res.status(400).json({ message: "Invalid user credentials." });
     }
 
-    res.json({
+    // Store user information in the session
+    req.session.user = user;
+
+    // What is 201
+    res.status(201).json({
       user,
     });
   } catch (error) {

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ScoresPage() {
+  const navigate = useNavigate();
+
   const [users, setUsers] = useState<any[]>([]);
 
   useEffect(() => {
-    console.log("hello")
     fetch("/user", {
       method: 'GET',
       headers: {
@@ -13,12 +15,14 @@ function ScoresPage() {
     })
       .then(res => res.json())
       .then((data: any) => {
-        console.log(data)
+        // This is not the best way to handle this
+        if (data.message === "Unauthorized") {
+          navigate("/signup")
+        }
         setUsers(data)
       })
   }, [])
 
-  console.log(users)
   return (
     <div>
       <h1>ScoresPage</h1>

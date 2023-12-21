@@ -1,9 +1,9 @@
 // pages/signup.js
 
 import { FormEvent, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-export default function UserAuth() {
+export default function SignupPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -30,7 +30,7 @@ export default function UserAuth() {
 
       if (response.ok) {
         console.log('User signed up successfully');
-        navigate('/scores')
+        navigate('/')
       } else {
         console.error('Failed to sign up:', response.statusText);
       }
@@ -91,6 +91,9 @@ export default function UserAuth() {
         >
           Sign Up
         </button>
+        <div className="text-gray-600 mt-3">
+          Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Log in</Link>
+        </div>
       </form>
     </div>
   );
