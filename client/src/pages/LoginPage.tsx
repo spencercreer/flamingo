@@ -2,11 +2,12 @@
 
 import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 export default function LoginPage() {
+  const { login } = useAppContext();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -29,6 +30,8 @@ export default function LoginPage() {
       });
 
       if (response.ok) {
+        const { user } = await response.json();
+        login(user._id);
         navigate("/");
       } else {
         console.error("Failed to sign up:", response.statusText);

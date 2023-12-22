@@ -1,9 +1,9 @@
-// pages/signup.js
-
 import { FormEvent, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
+import { useAppContext } from '../context/AppContext';
 
 export default function SignupPage() {
+  const { login } = useAppContext()
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -29,7 +29,8 @@ export default function SignupPage() {
       });
 
       if (response.ok) {
-        console.log('User signed up successfully');
+        const { user } = await response.json();
+        login(user._id);
         navigate('/')
       } else {
         console.error('Failed to sign up:', response.statusText);

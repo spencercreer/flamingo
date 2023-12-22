@@ -1,8 +1,11 @@
 import React, { useEffect, useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 function AddProspectPage() {
+  const { userId } = useAppContext();
   const navigate = useNavigate();
+  console.log(userId);
 
   const [formData, setFormData] = useState({
     // TODO: Store user id differently
@@ -12,21 +15,9 @@ function AddProspectPage() {
   });
 
   useEffect(() => {
-    fetch("/user", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data: any) => {
-        // This is not the best way to handle this
-        if (data.message === "Unauthorized") {
-          navigate("/signup");
-        }
-        console.log(data[0]._id);
-        setFormData({ ...formData, userId: data[0]._id })
-      });
+    if (!userId) {
+      navigate("/login");
+    }
   }, []);
 
   const handleChange = (e: any) => {
@@ -43,11 +34,11 @@ function AddProspectPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, userId }),
       });
 
       if (response.ok) {
-        console.log("Prospect added")
+        console.log("Prospect added");
         navigate("/prospects");
       } else {
         console.error("Failed to add lead:", response.statusText);
