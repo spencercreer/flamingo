@@ -1,15 +1,33 @@
-// pages/signup.js
+import React, { useEffect, useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { FormEvent, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-
-export default function LoginPage() {
+function AddProspectPage() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
+    // TODO: Store user id differently
+    userId: "",
+    companyName: "",
+    contact: "",
   });
+
+  useEffect(() => {
+    fetch("/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data: any) => {
+        // This is not the best way to handle this
+        if (data.message === "Unauthorized") {
+          navigate("/signup");
+        }
+        console.log(data[0]._id);
+        setFormData({ ...formData, userId: data[0]._id })
+      });
+  }, []);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -20,7 +38,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch("/user/login", {
+      const response = await fetch("/prospect", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,9 +47,10 @@ export default function LoginPage() {
       });
 
       if (response.ok) {
-        navigate("/");
+        console.log("Prospect added")
+        navigate("/prospects");
       } else {
-        console.error("Failed to sign up:", response.statusText);
+        console.error("Failed to add lead:", response.statusText);
       }
     } catch (error) {
       console.error("Error during signup:", error);
@@ -44,48 +63,42 @@ export default function LoginPage() {
         className="bg-white p-8 shadow-md rounded-md"
         onSubmit={handleSubmit}
       >
-        <h1 className="text-2xl font-bold mb-4">Log In</h1>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-600 mb-2">
-            Email
+          <label htmlFor="companyName" className="block text-gray-600 mb-2">
+            Company Name
           </label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
+            type="companyName"
+            id="companyName"
+            name="companyName"
+            value={formData.companyName}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             required
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-600 mb-2">
-            Password
+          <label htmlFor="contact" className="block text-gray-600 mb-2">
+            Contact (Optional)
           </label>
           <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
+            type="contact"
+            id="contact"
+            name="contact"
+            value={formData.contact}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            required
           />
         </div>
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
         >
-          Log In
+          Add Lead
         </button>
-        <div className="text-gray-600 mt-3">
-          Don't have an account?{" "}
-          <Link to="/signup" className="text-blue-500 hover:underline">
-            Sign up
-          </Link>
-        </div>
       </form>
     </div>
   );
 }
+
+export default AddProspectPage;

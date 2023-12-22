@@ -22,6 +22,4 @@ userRoutes.post("/signup", UserController.signUp);
 
 userRoutes.post("/login", UserController.login);
 
-userRoutes.put("/score", UserController.addScore)
-
 export default userRoutes;

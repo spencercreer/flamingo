@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import User from "../models/user";
 
-export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+export const getAllUsers = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const users = await User.find({});
 
@@ -30,10 +33,7 @@ export const signUp = async (req: any, res: Response): Promise<void> => {
   }
 };
 
-export const login = async (
-  req: any,
-  res: Response
-): Promise<Response | void> => {
+export const login = async (req: any, res: Response) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -58,21 +58,12 @@ export const login = async (
   }
 };
 
-export const addScore = async (req: Request, res: Response) => {
-  try {
-    const { userId, score } = req.body;
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    user.scores.push(score);
-    await user.save();
-
-    return res.status(200).json({ message: "Score added successfully", user });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-};
+// export const logout = async (req: any, res: Response) => {
+//   req.session.destroy((err) => {
+//     if (err) {
+//       console.error(err);
+//       return res.status(500).json({ error: "Internal Server Error" });
+//     }
+//     res.status(200).json({ message: "Logout successful" });
+//   });
+// };

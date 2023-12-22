@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, ObjectId } from "mongoose";
 import bcrypt from 'bcrypt';
 
 interface IUser extends Document {
@@ -6,7 +6,7 @@ interface IUser extends Document {
   email: string;
   password: string;
   judge: boolean;
-  scores: number[];
+  prospects: ObjectId[];
   comparePassword(password: string): Promise<boolean>;  
 }
 
@@ -28,15 +28,12 @@ const userSchema = new Schema<IUser>({
     required: true,
     minlength: 6,
   },
-  judge: {
-    type: Boolean,
-    // required: true,
-    default: false,
-  },
-  scores: {
-    type: [Number],
-    default: [],
-  },
+  prospects: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Prospect',
+    },
+  ],
 },
 {
     timestamps: true,
@@ -48,7 +45,7 @@ userSchema.pre('save', async function (next) {
     }
   
     next();
-  });
+});
 
 userSchema.methods.comparePassword = async function (password: string) {
     return bcrypt.compare(password, this.password);

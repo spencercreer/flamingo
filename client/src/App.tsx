@@ -4,7 +4,8 @@ import './index.css';
 import SignupPage from './pages/SignupPage';
 import ErrorPage from './pages/ErrorPage';
 import LoginPage from './pages/LoginPage';
-import ScoresPage from './pages/ScoresPage';
+import AddProspectPage from './pages/AddProspectPage';
+import ProspectsPage from './pages/ProspectsPage';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
     <Routes>
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<ScoresPage />} />
+      <Route path="/" element={<AddProspectPage />} />
+      <Route path="/prospects" element={<ProspectsPage />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   </Router>
