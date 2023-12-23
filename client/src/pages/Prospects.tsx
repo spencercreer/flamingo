@@ -6,49 +6,33 @@ import Button from "../components/Button";
 
 function Prospects() {
   const navigate = useNavigate();
+  const { userId } = useAppContext();
   const [prospects, setProspects] = useState([
-    {
-      companyName: "Kelly Spicers",
-      suggestedUrl: "www.google.com",
-    },
-    {
-      companyName: "Apple Inc.",
-      suggestedUrl: "www.google.com",
-    },
-    {
-      companyName: "Walmart",
-      suggestedUrl: "www.google.com",
-    },
   ]);
 
-  // TODO
-  // const { userId } = useAppContext();
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`/user/${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const userData = await response.json();
 
-  // const [user, setUser] = useState();
+        if (response.ok) {
+          setProspects(userData.prospects);
+        } else {
+          console.error("Failed to fetch user:", userData.error);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const response = await fetch(`/user/${userId}`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //       const userData = await response.json();
-
-  //       if (response.ok) {
-  //         setUser(userData);
-  //       } else {
-  //         console.error("Failed to fetch user:", userData.error);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching user:", error);
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, [userId]);
+    fetchUser();
+  }, [userId]);
 
   return (
     <Page>
@@ -59,7 +43,7 @@ function Prospects() {
             {prospects.map((prospect: any, i) => (
               <div key={i} className="flex flex-row space-x-2">
                 <div className="w-48">{prospect.companyName}</div>
-                <div className="w-48">{prospect.suggestedUrl}</div>
+                <div className="w-48">{prospect.suggestedUrl ? prospect.suggestedUrl : "www.temporyURL.com"}</div>
                 <div className="w-32">
                   <Button>Enroll</Button>
                 </div>

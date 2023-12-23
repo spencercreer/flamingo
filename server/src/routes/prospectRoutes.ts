@@ -3,12 +3,11 @@ import { ProspectController } from "../controllers";
 
 const userRoutes = Router();
 
-userRoutes.route("/")
-    .get(ProspectController.getAllProspects)
-    .post(ProspectController.addProspect)
+userRoutes.route("/").post(ProspectController.createProspect);
 
-userRoutes.get("/:id", () => {
-    // TODO
-})
+userRoutes
+  .route("/:id")
+  .get(ProspectController.getProspect)
+  .put(ProspectController.updateProspect);
 
 export default userRoutes;
