@@ -15,6 +15,25 @@ export const getAllUsers = async (
   }
 };
 
+export const getUser = async (req: Request, res: Response): Promise<void> => {
+  const userId = req.params.id;
+
+  try {
+    const user = await User.findById(userId).populate('prospects');
+
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to retrieve the user.' });
+  }
+};
+
+
 export const signUp = async (req: any, res: Response): Promise<void> => {
   try {
     const { name, email, password } = req.body;

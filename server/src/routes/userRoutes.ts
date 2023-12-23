@@ -14,9 +14,7 @@ const authenticateUser = (req: any, res: Response, next: NextFunction) => {
 
 userRoutes.get("/", authenticateUser, UserController.getAllUsers)
 
-userRoutes.get("/:id", () => {
-    // TODO
-})
+userRoutes.get("/:id", UserController.getUser)
 
 userRoutes.post("/signup", UserController.signUp);
 

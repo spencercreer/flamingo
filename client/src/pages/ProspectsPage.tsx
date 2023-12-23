@@ -1,32 +1,46 @@
 import React, { useEffect, useState, FormEvent } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 function ProspectsPage() {
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { userId } = useAppContext();
 
-//   const [user, setUser] = useState();
+  const [user, setUser] = useState();
 
-//   useEffect(() => {
-//     fetch("/user", {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     })
-//       .then((res) => res.json())
-//       .then((data: any) => {
-//         // This is not the best way to handle this
-//         if (data.message === "Unauthorized") {
-//           navigate("/signup");
-//         }
-//         console.log(data);
-//         // setUser(data)
-//       });
-//   }, []);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`/user/${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const userData = await response.json();
+
+        if (response.ok) {
+          setUser(userData);
+        } else {
+          console.error("Failed to fetch user:", userData.error);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, [userId]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-        Prospects Page
+      <div className="flex flex-col">
+      <h1 className="text-bold">Prospects</h1>
+        {user &&
+          user.prospects.map((prospect: any) => (
+            <div>{prospect.companyName}</div>
+          ))}
+      </div>
     </div>
   );
 }
