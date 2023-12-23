@@ -2,6 +2,7 @@ import React, { useEffect, useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import Page from "../components/Page";
+import Button from "../components/Button";
 
 function AddProspect() {
   const { userId } = useAppContext();
@@ -27,9 +28,10 @@ function AddProspect() {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
     try {
+      e.preventDefault();
+      console.log("worked");
+
       const response = await fetch("/prospect", {
         method: "POST",
         headers: {
@@ -83,12 +85,9 @@ function AddProspect() {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
-          >
+          <Button type="submit">
             Add Lead
-          </button>
+          </Button>
         </form>
       </div>
     </Page>

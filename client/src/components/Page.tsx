@@ -5,7 +5,7 @@ function Page({ children }: { children: JSX.Element }) {
   return (
     <>
       <Navbar />
-      {children}
+      <div className="p-32">{children}</div>
     </>
   );
 }
