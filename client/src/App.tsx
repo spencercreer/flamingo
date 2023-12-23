@@ -6,11 +6,12 @@ import {
   Navigate,
 } from "react-router-dom";
 import AppContextProvider, { useAppContext } from "./context/AppContext";
-import SignupPage from "./pages/SignupPage";
-import ErrorPage from "./pages/ErrorPage";
-import LoginPage from "./pages/LoginPage";
-import AddProspectPage from "./pages/AddProspectPage";
-import ProspectsPage from "./pages/ProspectsPage";
+import Signup from "./pages/Signup";
+import Error from "./pages/Error";
+import Login from "./pages/Login";
+import AddProspect from "./pages/AddProspect";
+import Prospects from "./pages/Prospects";
+import Dashboard from "./pages/Dashboard";
 
 function ProtectedRoute({ protectedPage }: { protectedPage: JSX.Element }) {
   const { isAuthenticated } = useAppContext();
@@ -26,17 +27,21 @@ export default function App() {
     <AppContextProvider>
       <Router>
         <Routes>
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoute protectedPage={<Dashboard />} />}
+          />
           <Route
             path="/prospects"
-            element={<ProtectedRoute protectedPage={<ProspectsPage />} />}
+            element={<ProtectedRoute protectedPage={<Prospects />} />}
           />
           <Route
             path="/"
-            element={<ProtectedRoute protectedPage={<AddProspectPage />} />}
+            element={<ProtectedRoute protectedPage={<AddProspect />} />}
           />
-          <Route path="*" element={<ErrorPage />} />
+          <Route path="*" element={<Error />} />
         </Routes>
       </Router>
     </AppContextProvider>
