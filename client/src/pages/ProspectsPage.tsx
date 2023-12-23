@@ -1,47 +1,66 @@
 import React, { useEffect, useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
+import Navbar from "../components/Navbar";
 
 function ProspectsPage() {
   const navigate = useNavigate();
-  const { userId } = useAppContext();
+  const [prospects, setProspects] = useState([
+    {
+      companyName: "Kelly Spicers",
+      suggestedUrl: "",
+    },
+    {
+      companyName: "Apple Inc.",
+      suggestedUrl: "",
+    },
+    {
+      companyName: "Walmart",
+      suggestedUrl: "",
+    }
+  ]);
 
-  const [user, setUser] = useState();
+  // TODO
+  // const { userId } = useAppContext();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(`/user/${userId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const userData = await response.json();
+  // const [user, setUser] = useState();
 
-        if (response.ok) {
-          setUser(userData);
-        } else {
-          console.error("Failed to fetch user:", userData.error);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const response = await fetch(`/user/${userId}`, {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
+  //       const userData = await response.json();
 
-    fetchUser();
-  }, [userId]);
+  //       if (response.ok) {
+  //         setUser(userData);
+  //       } else {
+  //         console.error("Failed to fetch user:", userData.error);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user:", error);
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, [userId]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="flex flex-col">
-      <h1 className="text-bold">Prospects</h1>
-        {user &&
-          user.prospects.map((prospect: any) => (
+    <>
+      <Navbar />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col">
+          <h1 className="text-bold">Prospects</h1>
+          {prospects.map((prospect: any) => (
             <div>{prospect.companyName}</div>
           ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

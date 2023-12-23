@@ -4,6 +4,5 @@
 
 /* This hides the webpack error/warning overlay */
 iframe {
-    display: none;
-  }
-  
+  display: none;
+}

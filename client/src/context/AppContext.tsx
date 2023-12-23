@@ -1,21 +1,24 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 interface IAppContext {
   userId: string | null;
+  isAuthenticated: boolean;
   login: (x: string) => void;
   logout: () => void;
-  setUserId: any;
 }
 
 const AppContext = createContext<IAppContext>(null!);
 
 export const useAppContext = () => useContext(AppContext);
 
-export const AppContextProvider = ({ children }: { children: any }) => {
+const AppContextProvider = ({ children }: { children: any }) => {
   const [userId, setUserId] = useState<string | null>(null);
+  // TODO Authentication
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   const login = (userData: string) => {
     console.log(userData);
+    setIsAuthenticated(true);
     setUserId(userData);
   };
 
@@ -24,8 +27,10 @@ export const AppContextProvider = ({ children }: { children: any }) => {
   };
 
   return (
-    <AppContext.Provider value={{ userId, login, logout, setUserId }}>
+    <AppContext.Provider value={{ userId, isAuthenticated, login, logout }}>
       {children}
     </AppContext.Provider>
   );
 };
+
+export default AppContextProvider;

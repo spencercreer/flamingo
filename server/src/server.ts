@@ -9,6 +9,7 @@ const PORT = 6000;
 
 app.use(
   session({
+    name: "myCookie",
     secret: "your-secret-key", // Change this to a random and secure string
     resave: false,
     saveUninitialized: true,

@@ -18,9 +18,9 @@ export default function LoginPage() {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
     try {
+      e.preventDefault();
+      
       const response = await fetch("/user/login", {
         method: "POST",
         headers: {
