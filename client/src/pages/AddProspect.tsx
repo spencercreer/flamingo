@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import Page from "../components/Page";
 import Button from "../components/Button";
+import Input from "../components/Input";
 
 function AddProspect() {
   const { userId } = useAppContext();
@@ -30,7 +31,6 @@ function AddProspect() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      console.log("worked");
 
       const response = await fetch("/prospect", {
         method: "POST",
@@ -53,41 +53,32 @@ function AddProspect() {
 
   return (
     <Page>
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex mt-48 justify-center">
         <form
           className="bg-white p-8 shadow-md rounded-md"
           onSubmit={handleSubmit}
         >
-          <div className="mb-4">
-            <label htmlFor="companyName" className="block text-gray-600 mb-2">
-              Company Name
-            </label>
-            <input
-              type="companyName"
-              id="companyName"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="contact" className="block text-gray-600 mb-2">
-              Contact (Optional)
-            </label>
-            <input
-              type="contact"
-              id="contact"
-              name="contact"
-              value={formData.contact}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            />
-          </div>
-          <Button type="submit">
-            Add Lead
-          </Button>
+          <Input
+            className="mb-4"
+            label="Company Name"
+            type="companyName"
+            id="companyName"
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            className="mb-4"
+            label="Contact (Optional)"
+            type="companyName"
+            id="companyName"
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
+            required
+          />
+          <Button type="submit">Add Lead</Button>
         </form>
       </div>
     </Page>

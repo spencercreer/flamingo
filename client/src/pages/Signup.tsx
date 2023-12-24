@@ -1,14 +1,17 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAppContext } from '../context/AppContext';
+import { useAppContext } from "../context/AppContext";
+import Page from "../components/Page";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 export default function SignupPage() {
-  const { login } = useAppContext()
+  const { login } = useAppContext();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
   });
 
   const handleChange = (e: any) => {
@@ -20,10 +23,10 @@ export default function SignupPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/user/signup', {
-        method: 'POST',
+      const response = await fetch("/user/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -31,71 +34,62 @@ export default function SignupPage() {
       if (response.ok) {
         const { user } = await response.json();
         login(user._id);
-        navigate('/')
+        navigate("/");
       } else {
-        console.error('Failed to sign up:', response.statusText);
+        console.error("Failed to sign up:", response.statusText);
       }
     } catch (error) {
-      console.error('Error during signup:', error);
+      console.error("Error during signup:", error);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form className="bg-white p-8 shadow-md rounded-md" onSubmit={handleSubmit}>
-        <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-600 mb-2">
-            Name
-          </label>
-          <input
+    <Page>
+      <div className="flex mt-48 justify-center">
+        <form
+          className="bg-white p-8 shadow-md rounded-md"
+          onSubmit={handleSubmit}
+        >
+          <h1 className="mb-4">Sign Up</h1>
+          <Input
+            className="mb-4"
+            label="Name"
             type="text"
             id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             required
           />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-gray-600 mb-2">
-            Email
-          </label>
-          <input
+          <Input
+            className="mb-4"
+            label="Email"
             type="email"
             id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             required
           />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-gray-600 mb-2">
-            Password
-          </label>
-          <input
+          <Input
+            className="mb-4"
+            label="Password"
             type="password"
             id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             required
           />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
-        >
-          Sign Up
-        </button>
-        <div className="text-gray-600 mt-3">
-          Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Log in</Link>
-        </div>
-      </form>
-    </div>
+          <Button type="submit">Sign Up</Button>
+          <div className="text-gray-600 mt-3">
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-500 hover:underline">
+              Log in
+            </Link>
+          </div>
+        </form>
+      </div>
+    </Page>
   );
 }
